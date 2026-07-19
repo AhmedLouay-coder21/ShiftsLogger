@@ -33,6 +33,7 @@ ScaffoldingReadMe.txt
 
 # NuGet Packages
 *.nupkg
+
 # NuGet Symbol Packages
 *.snupkg
 
@@ -47,11 +48,13 @@ CodeCoverage/
 # MSBuild Binary and Structured Log
 *.binlog
 
-# MSTest test Results
-[Tt]est[Rr]esult*/
-[Bb]uild[Ll]og.*
+# Visual Studio / IDE specific files
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
 
-# NUnit
-*.VisualState.xml
-TestResult.xml
-nunit-*.xml
+# OS specific files
+.DS_Store
+Thumbs.db
