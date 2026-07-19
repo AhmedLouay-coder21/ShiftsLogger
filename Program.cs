@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using ShiftsLogger.Data;
+
 namespace ShiftsLogger
 {
     public class Program
@@ -12,6 +15,10 @@ namespace ShiftsLogger
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+            // Database connection setup
+            builder.Services.AddDbContext<ShiftsLoggerDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
+            ?? throw new InvalidOperationException("Connection string"
+            + "'DefaultConnection' not found.")));
 
             var app = builder.Build();
 
