@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShiftsLogger.Data;
+using ShiftsLogger.DTO;
 using ShiftsLogger.Interfaces;
 using ShiftsLogger.Models;
 
@@ -23,7 +24,32 @@ namespace ShiftsLogger.Services
 
 			return "Shift was created successfully!";
         }
-        public List<Shift> GetAllShifts()
+		public string UpdateShiftById(int id, UpdateShiftDto updatedShift)
+		{
+			var shift = _context.Shifts.FirstOrDefault(s => s.Id == id);
+
+			if (shift == null)
+			{
+				return "An error has occurred. The shift was not found!";
+			}
+
+			if (updatedShift.Area != null)
+				shift.Area = updatedShift.Area;
+
+			if (updatedShift.StartDate.HasValue)
+				shift.StartDate = updatedShift.StartDate.Value;
+
+			if (updatedShift.EndDate.HasValue)
+				shift.EndDate = updatedShift.EndDate.Value;
+
+			if (updatedShift.EmployeeId.HasValue)
+				shift.EmployeeId = updatedShift.EmployeeId.Value;
+
+			_context.SaveChanges();
+
+			return "Shift was updated successfully!";
+		}
+		public List<Shift> GetAllShifts()
         {
             return _context.Shifts.Include(s => s.Employee).ToList();
         }
