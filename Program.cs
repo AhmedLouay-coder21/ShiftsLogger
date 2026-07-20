@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using ShiftsLogger.Data;
+using ShiftsLogger.Data.Seeding;
 using ShiftsLogger.Interfaces;
 using ShiftsLogger.Services;
 
@@ -37,6 +38,13 @@ namespace ShiftsLogger
 
 
             app.MapControllers();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ShiftsLoggerDbContext>();
+
+                DbSeeder.Seed(context);
+            }
 
             app.Run();
         }

@@ -1,4 +1,5 @@
-﻿using ShiftsLogger.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ShiftsLogger.Data;
 using ShiftsLogger.Interfaces;
 using ShiftsLogger.Models;
 
@@ -18,26 +19,30 @@ namespace ShiftsLogger.Services
                 return "An error has occured, The shift was not created!";
             }
             _context.Shifts.Add(shift);
-            return "Shift was created successfully!";
+			_context.SaveChanges();
+
+			return "Shift was created successfully!";
         }
         public List<Shift> GetAllShifts()
         {
-            return _context.Shifts.ToList();
+            return _context.Shifts.Include(s => s.Employee).ToList();
         }
         public Shift? GetShiftById(int Id)
         {
-            return _context.Shifts.FirstOrDefault(s => s.Id == Id);
+            return _context.Shifts.Include(s => s.Employee).FirstOrDefault(s => s.Id == Id);
         }
         public List<Shift> GetShiftsByEmployeeId(int Id)
         {
             return _context.Shifts
                     .Where(s => s.EmployeeId == Id)
+                    .Include(s => s.Employee)
                     .ToList();
         }
         public List<Shift> GetShiftsByAreaName(string areaName)
         {
             return _context.Shifts.Where(s => s.Area == areaName)
-                    .ToList();
+				    .Include(s => s.Employee)
+					.ToList();
         }
         public string? DeleteShiftById(int Id)
         {
@@ -47,7 +52,9 @@ namespace ShiftsLogger.Services
                 return "Error, Shift Id was not found!";
             }
             _context.Shifts.Remove(shift);
-            return "The shift was deleted successfully!";
+			_context.SaveChanges();
+
+			return "The shift was deleted successfully!";
         }
     }
 }
