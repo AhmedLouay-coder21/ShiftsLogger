@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ShiftsLogger.Data;
+using ShiftsLogger.Models;
 
 namespace ShiftsLogger.Controllers
 {
@@ -7,14 +8,11 @@ namespace ShiftsLogger.Controllers
     [Route("[controller]")]
     public class ShiftsLoggerController : ControllerBase
     {
-        public class MyController
-        {
-            private readonly ShiftsLoggerDbContext _context;
+        private readonly ShiftsLoggerDbContext _context;
 
-            public MyController(ShiftsLoggerDbContext context)
-            {
-                _context = context;
-            }
+        public ShiftsLoggerController(ShiftsLoggerDbContext context)
+        {
+            _context = context;
         }
     }
 }
