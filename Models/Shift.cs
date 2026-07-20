@@ -15,7 +15,7 @@
         public DateTime StartDate { get; set; }
         // shift end date
         public DateTime EndDate { get; set; }
-
+        // foreign key
         public Employee Employee { get; set; } = null!;
     }
 }

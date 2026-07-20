@@ -1,6 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
 using ShiftsLogger.Data;
+using ShiftsLogger.Interfaces;
+using ShiftsLogger.Services;
 
 namespace ShiftsLogger
 {
@@ -19,6 +21,7 @@ namespace ShiftsLogger
             builder.Services.AddDbContext<ShiftsLoggerDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException("Connection string"
             + "'DefaultConnection' not found.")));
+            builder.Services.AddScoped<IShiftService, ShiftsService>();
 
             var app = builder.Build();
 
