@@ -5,7 +5,7 @@ using ShiftsLogger.Models;
 namespace ShiftsLogger.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/shifts")]
     public class ShiftsLoggerController : ControllerBase
     {
         private readonly IShiftService _shiftsService;
@@ -17,7 +17,7 @@ namespace ShiftsLogger.Controllers
         [HttpPost]
         public ActionResult<string> CreateNewShift(Shift shift)
         {
-            return Ok(CreateNewShift(shift));
+            return Ok(_shiftsService.CreateNewShift(shift));
         }
         [HttpGet]
         public ActionResult<List<Shift>> GetAllShifts()
@@ -25,17 +25,17 @@ namespace ShiftsLogger.Controllers
             return Ok(_shiftsService.GetAllShifts());
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public ActionResult<Shift> GetShiftById(int Id)
         {
             return Ok(_shiftsService.GetShiftById(Id));
         }
-        [HttpGet]
+        [HttpGet("employee/{id}")]
         public ActionResult<List<Shift>> GetShiftsByEmployeeId(int Id)
         {
             return Ok(_shiftsService.GetShiftsByEmployeeId(Id));
         }
-        [HttpGet]
+        [HttpGet("area/{id}")]
         public ActionResult<List<Shift>> GetShiftsByAreaName(string areaName)
         {
             return Ok(_shiftsService.GetShiftsByAreaName(areaName));
