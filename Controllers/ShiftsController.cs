@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using ShiftsLogger.DTO;
 using ShiftsLogger.Interfaces;
 using ShiftsLogger.Models;
 
@@ -6,19 +7,27 @@ namespace ShiftsLogger.Controllers
 {
     [ApiController]
     [Route("api/shifts")]
-    public class ShiftsLoggerController : ControllerBase
+    public class ShiftsController : ControllerBase
     {
         private readonly IShiftService _shiftsService;
 
-        public ShiftsLoggerController(IShiftService shiftService)
+        public ShiftsController(IShiftService shiftService)
         {
             _shiftsService = shiftService;
         }
+
         [HttpPost]
         public ActionResult<string> CreateNewShift(Shift shift)
         {
             return Ok(_shiftsService.CreateNewShift(shift));
         }
+
+        [HttpPatch("{id}")]
+        public ActionResult<string?> UpdateShiftById(int Id, UpdateShiftDto updatedShift)
+        {
+            return Ok(_shiftsService.UpdateShiftById(Id, updatedShift));
+        }
+
         [HttpGet]
         public ActionResult<List<Shift>> GetAllShifts()
         {
@@ -30,17 +39,20 @@ namespace ShiftsLogger.Controllers
         {
             return Ok(_shiftsService.GetShiftById(Id));
         }
-        [HttpGet("employee/{id}")]
+
+        [HttpGet("employee/{Id}")]
         public ActionResult<List<Shift>> GetShiftsByEmployeeId(int Id)
         {
             return Ok(_shiftsService.GetShiftsByEmployeeId(Id));
         }
-        [HttpGet("area/{id}")]
+
+        [HttpGet("area/{areaName}")]
         public ActionResult<List<Shift>> GetShiftsByAreaName(string areaName)
         {
             return Ok(_shiftsService.GetShiftsByAreaName(areaName));
         }
-        [HttpDelete] 
+
+        [HttpDelete("{Id}")] 
         public ActionResult DeleteShiftById(int Id)
         {
             return Ok(_shiftsService.DeleteShiftById(Id));
