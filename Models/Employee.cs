@@ -8,7 +8,7 @@ namespace ShiftsLogger.Models
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Role { get; set; }
-        public int Salary { get; set; }
+        public int? Salary { get; set; }
 
         [JsonIgnore]
         public ICollection<Shift> Shifts { get; } = new List<Shift>(); // Collection navigation containing dependents

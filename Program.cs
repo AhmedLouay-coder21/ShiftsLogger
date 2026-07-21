@@ -23,6 +23,7 @@ namespace ShiftsLogger
             ?? throw new InvalidOperationException("Connection string"
             + "'DefaultConnection' not found.")));
             builder.Services.AddScoped<IShiftService, ShiftsService>();
+            builder.Services.AddScoped<IEmployeeService, EmployeesService>();
 
             var app = builder.Build();
 
