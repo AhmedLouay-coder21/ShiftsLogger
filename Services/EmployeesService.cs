@@ -16,31 +16,31 @@ namespace ShiftsLogger.Services
         {
             if(employee == null)
             {
-                return "An error has occured, The shift was not created!";
+                return "An error has occurred, The employee was not created!";
             }
             _context.Employees.Add(employee);
             _context.SaveChanges();
-            return "A new emplyee was added successfully";
+            return "A new employee was added successfully";
         }
-        public string? UpdateEmployeeById(int Id, UpdateEmployeeDto updatedEmployee)
+        public string? UpdateEmployeeById(int Id, UpdateEmployeeDto updatedEmployeeDto)
         {
             var employee = _context.Employees.FirstOrDefault(s => s.Id == Id);
 
             if (employee == null)
             {
-                return "An error has occurred. The employee was not added!";
+                return "An error has occurred. The employee was not found!";
             }
-            if (updatedEmployee.FirstName != null)
-                employee.FirstName = updatedEmployee.FirstName;
+            if (updatedEmployeeDto.FirstName != null)
+                employee.FirstName = updatedEmployeeDto.FirstName;
 
-            if (updatedEmployee.LastName != null)
-                employee.LastName = updatedEmployee.LastName;
+            if (updatedEmployeeDto.LastName != null)
+                employee.LastName = updatedEmployeeDto.LastName;
 
-            if (updatedEmployee.Role != null)
-                employee.Role = updatedEmployee.Role;
+            if (updatedEmployeeDto.Role != null)
+                employee.Role = updatedEmployeeDto.Role;
 
-            if (updatedEmployee.Salary != 0)
-                employee.Salary = updatedEmployee.Salary;
+            if (updatedEmployeeDto.Salary.HasValue)
+                employee.Salary = updatedEmployeeDto.Salary.Value;
 
             _context.SaveChanges();
             return "Employee was updated successfully!";
@@ -58,7 +58,7 @@ namespace ShiftsLogger.Services
             var employeeToDelete = _context.Employees.FirstOrDefault(e => e.Id == Id);
             if (employeeToDelete == null)
             {
-                return "Error, Employee Id was not found!";
+                return null;
             }
             _context.Employees.Remove(employeeToDelete);
             _context.SaveChanges();

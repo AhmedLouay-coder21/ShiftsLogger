@@ -17,14 +17,21 @@ namespace ShiftsLogger.Services
         {
             if(shift == null)
             {
-                return "An error has occured, The shift was not created!";
+                return "An error has occurred, The shift was not created!";
             }
+            var employeeExists = _context.Employees.Any(e => e.Id == shift.EmployeeId);
+
+            if (!employeeExists)
+            {
+                return "Employee not found.";
+            }
+
             _context.Shifts.Add(shift);
 			_context.SaveChanges();
 
 			return "Shift was created successfully!";
         }
-		public string UpdateShiftById(int id, UpdateShiftDto updatedShift)
+		public string UpdateShiftById(int id, UpdateShiftDto updatedShiftDto)
 		{
 			var shift = _context.Shifts.FirstOrDefault(s => s.Id == id);
 
@@ -33,19 +40,28 @@ namespace ShiftsLogger.Services
 				return "An error has occurred. The shift was not found!";
 			}
 
-			if (updatedShift.Area != null)
-				shift.Area = updatedShift.Area;
+			if (updatedShiftDto.Area != null)
+				shift.Area = updatedShiftDto.Area;
 
-			if (updatedShift.StartDate.HasValue)
-				shift.StartDate = updatedShift.StartDate.Value;
+			if (updatedShiftDto.StartDate.HasValue)
+				shift.StartDate = updatedShiftDto.StartDate.Value;
 
-			if (updatedShift.EndDate.HasValue)
-				shift.EndDate = updatedShift.EndDate.Value;
+			if (updatedShiftDto.EndDate.HasValue)
+				shift.EndDate = updatedShiftDto.EndDate.Value;
 
-			if (updatedShift.EmployeeId.HasValue)
-				shift.EmployeeId = updatedShift.EmployeeId.Value;
+            if (updatedShiftDto.EmployeeId.HasValue)
+            {
+                var employeeExists = _context.Employees.Any(e => e.Id == updatedShiftDto.EmployeeId.Value);
 
-			_context.SaveChanges();
+                if (!employeeExists)
+                {
+                    return "Employee not found.";
+                }
+
+                shift.EmployeeId = updatedShiftDto.EmployeeId.Value;
+            }
+
+            _context.SaveChanges();
 
 			return "Shift was updated successfully!";
 		}
@@ -75,7 +91,7 @@ namespace ShiftsLogger.Services
             var shift = _context.Shifts.FirstOrDefault(s => s.Id == Id);
             if(shift == null)
             {
-                return "Error, Shift Id was not found!";
+                return null;
             }
             _context.Shifts.Remove(shift);
 			_context.SaveChanges();

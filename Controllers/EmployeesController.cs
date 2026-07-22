@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ShiftsLogger.DTO;
 using ShiftsLogger.Interfaces;
 using ShiftsLogger.Models;
@@ -23,7 +22,7 @@ namespace ShiftsLogger.Controllers
             return Ok(_employeesService.AddNewEmployee(employee));
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch("{Id}")]
         public ActionResult<string?> UpdateEmployeeById(int Id, UpdateEmployeeDto updateEmployee)
         {
             return Ok(_employeesService.UpdateEmployeeById(Id, updateEmployee));
@@ -35,16 +34,26 @@ namespace ShiftsLogger.Controllers
             return Ok(_employeesService.GetAllEmployees());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{Id}")]
         public ActionResult<Employee?> GetEmployeeById(int Id)
         {
-            return Ok(_employeesService.GetEmployeeById(Id));
+            var employee = _employeesService.GetEmployeeById(Id);
+
+            if (employee == null)
+                return NotFound();
+
+            return Ok(employee);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{Id}")]
         public ActionResult<string?> DeleteEmployeeById(int Id)
         {
-            return Ok(_employeesService.DeleteEmployeeById(Id));
+            var result = _employeesService.DeleteEmployeeById(Id);
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
         }
     }
 }

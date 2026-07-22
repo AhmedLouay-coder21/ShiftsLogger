@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShiftsLogger.Models;
-using System.Reflection.Metadata;
 
 namespace ShiftsLogger.Data
 {

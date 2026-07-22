@@ -22,7 +22,7 @@ namespace ShiftsLogger.Controllers
             return Ok(_shiftsService.CreateNewShift(shift));
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch("{Id}")]
         public ActionResult<string?> UpdateShiftById(int Id, UpdateShiftDto updatedShift)
         {
             return Ok(_shiftsService.UpdateShiftById(Id, updatedShift));
@@ -34,10 +34,15 @@ namespace ShiftsLogger.Controllers
             return Ok(_shiftsService.GetAllShifts());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{Id}")]
         public ActionResult<Shift> GetShiftById(int Id)
         {
-            return Ok(_shiftsService.GetShiftById(Id));
+            var shift = _shiftsService.GetShiftById(Id);
+
+            if (shift == null)
+                return NotFound();
+
+            return Ok(shift);
         }
 
         [HttpGet("employee/{Id}")]
@@ -52,10 +57,15 @@ namespace ShiftsLogger.Controllers
             return Ok(_shiftsService.GetShiftsByAreaName(areaName));
         }
 
-        [HttpDelete("{Id}")] 
-        public ActionResult DeleteShiftById(int Id)
+        [HttpDelete("{Id}")]
+        public ActionResult<string?> DeleteShiftById(int Id)
         {
-            return Ok(_shiftsService.DeleteShiftById(Id));
+            var result = _shiftsService.DeleteShiftById(Id);
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
         }
     }
 }
